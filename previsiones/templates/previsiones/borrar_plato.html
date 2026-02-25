@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Borrado | Smart Restaurant</title>
+    <style>
+        :root {
+            --google-red: #EA4335;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container { max-width: 450px; width: 100%; margin-top: 80px; }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 40px;
+            text-align: center;
+            border-top: 8px solid var(--google-red);
+        }
+
+        h1 { color: #202124; font-size: 1.3rem; margin-bottom: 20px; }
+        .warning-icon { font-size: 50px; margin-bottom: 10px; display: block; }
+
+        .btn-delete {
+            background-color: var(--google-red);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .btn-delete:hover { background-color: #d33828; }
+        .cancel-link { display: block; margin-top: 20px; color: #5f6368; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <span class="warning-icon">⚠️</span>
+            <h1>¿Eliminar "{{ plato.nombre }}"?</h1>
+            <p>Esta acción no se puede deshacer y se borrarán sus previsiones asociadas.</p>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete">Confirmar Eliminación</button>
+            </form>
+            
+            <a href="{% url 'lista_platos' %}" class="cancel-link">No, mantener plato</a>
+        </div>
+    </div>
+</body>
+</html>

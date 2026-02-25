@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Racó dels Sabors | Predicció de Demanda</title>
+    <style>
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #EA4335;
+            --google-yellow: #FBBC05;
+            --google-green: #34A853;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #3c4043;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--google-blue);
+            padding-bottom: 10px;
+        }
+
+        h1 { color: var(--google-blue); margin-bottom: 5px; }
+        .subtitle { color: #70757a; font-style: italic; }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        h2 { border-left: 5px solid var(--google-green); padding-left: 10px; font-size: 1.2rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th { background-color: #f1f3f4; color: #5f6368; }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--google-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover { background-color: #357ae8; }
+        .btn-ia { background-color: var(--google-yellow); color: #3c4043; font-weight: bold; }
+        .btn-danger { color: var(--google-red); font-size: 0.9rem; text-decoration: none; margin-left: 10px; }
+        .btn-edit { color: var(--google-blue); font-size: 0.9rem; text-decoration: none; }
+
+        form p { display: flex; flex-direction: column; margin-bottom: 15px; }
+        input, select { padding: 8px; border: 1px solid #dadce0; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>El Racó dels Sabors</h1>
+            <p class="subtitle">Sistema Intel·ligent de Gestió i Predicció</p>
+        </header>
+
+        <div class="card">
+            <h2>Afegir Nou Plat a la Carta</h2>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn">Guardar a la Base de Dades</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Gestió de la Carta Actual</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plat</th>
+                        <th>Preu</th>
+                        <th>Accions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plato in platos %}
+                    <tr>
+                        <td><strong>{{ plato.nombre }}</strong></td>
+                        <td>{{ plato.precio }}€</td>
+                        <td>
+                            <a href="{% url 'editar_plato' plato.id %}" class="btn-edit">Editar</a>
+                            <a href="{% url 'borrar_plato' plato.id %}" class="btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Anàlisi de Demanda i Estoc</h2>
+            <p>Optimitza els recursos del Racó dels Sabors amb Vertex AI.</p>
+            <a href="{% url 'crear_prevision' %}" class="btn btn-ia">⚡ Generar Predicció Intel·ligent</a>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Plat</th>
+                        <th>Estimació de Racions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prevision in previsiones %}
+                    <tr>
+                        <td>{{ prevision.fecha }}</td>
+                        <td>{{ prevision.plato.nombre }}</td>
+                        <td><span style="color: var(--google-green); font-weight: bold;">{{ prevision.cantidad_estimada }} uds.</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
