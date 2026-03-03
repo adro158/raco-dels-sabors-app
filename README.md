@@ -29,4 +29,4 @@ Per executar aquest projecte en un entorn local, segueix aquests passos:
 
 1. Clona aquest repositori al teu ordinador:
 ```bash
-git clone <ENLLAÇ_DEL_TEU_REPOSITORI_AQUÍ>
+git clone <https://github.com/adro158/raco-dels-sabors-app.git>
